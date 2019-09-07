@@ -13,4 +13,6 @@ $(function(){
         $(this).addClass("current").siblings().removeClass("current");
     });
 	
+    $("li:first").trigger("click");//触发button的click事件
+
 });
