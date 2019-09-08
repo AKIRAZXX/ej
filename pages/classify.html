@@ -1,8 +1,4 @@
-<script>
-$(document).ready(function(){
-	alert(111);
-})
-</script>
+
 <!-- 内容 -->
 <div class="classift">
 	<div class="mb_nav">
@@ -12,6 +8,16 @@ $(document).ready(function(){
 		<div id="btn_add" class="btn">添加</div>
 		<div id="btn_pldel" class="btn">批量删除</div>
 		<div id="btn_dc" class="btn">导出</div>
+	</div>
+	<div class="tjbd">
+		<form method="post" action="javascript:void(0)">
+			<!-- hidden 一个隐藏表单 可以用来存放不想让用户看到的数据 -->
+			<input type="hidden" name="id" id="id" />
+			姓名 <input type="text" name="name" id="name" />
+			数量 <input type="text" name="num" id="num" />
+			父级栏 <input type="text" name="parentId"/>
+			<input type="submit" name="提交" />
+		</form>
 	</div>
 	<table class="table">
 		<thead>
