@@ -61,14 +61,15 @@ html,body,.container{
 	padding-top: 10px;
 	padding-left: 10px;
 	background: #ededed;
-	overflow-y:auto; 
 
 }
 .right>.content{
-	height: 100%;
+	height: 92%;
 	background-color: #fff;
 	border-top-left-radius:10px;
 	border-bottom-left-radius:10px;
+	overflow-y:hidden; 
+
 
 
 }
