@@ -68,11 +68,22 @@ html,body,.container{
 	height: 100%;
 	background-color: #fff;
 	border-top-left-radius:10px;
+	border-bottom-left-radius:10px;
+
 
 }
 #wrapper{
 	height: 100%;
-	overflow-y:auto; 
+
+}
+#db{
+	height: 30px;
+	font-size: 12px;
+	text-align: center;
+	line-height: 30px;
+	margin: 0 auto;
+	margin-top: 10px;
+	color: #545456;
 
 }
 /*#wrapper::-webkit-scrollbar {
