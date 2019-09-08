@@ -1,2 +1,25 @@
-.customer{
+.btns{
+	margin:5px;
+}
+.btn {
+	border:1px solid #CCC;
+ 	background-color: lightblue;
+	height: 20px;
+	display: inline-block;
+ 	border-radius: 4px;
+}
+.hung {
+	display: none;
+}
+.bg{
+	background-color: #ededed;
+}
+table {
+	border-collapse: collapse;
+	width: 100%;
+	text-align: center;
+}
+.table td {
+	border:1px solid #ccc;
+	height: 2em;
 }
