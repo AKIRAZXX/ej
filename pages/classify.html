@@ -1,24 +1,26 @@
-<!-- css -->
-<!-- <style type="text/css" src="../css/classift.css"></style> -->
-<!-- js -->
-<script type="text/javascript" src="../js/classift.js"></script>
-
+<script>
+$(document).ready(function(){
+	alert(111);
+})
+</script>
 <!-- 内容 -->
-<div>
+<div class="classift">
 	<div class="mb_nav">
 		分类管理
 	</div>
 	<div class="btns">
 		<div id="btn_add" class="btn">添加</div>
+		<div id="btn_pldel" class="btn">批量删除</div>
+		<div id="btn_dc" class="btn">导出</div>
 	</div>
 	<table class="table">
 		<thead>
 			<tr>
-				<td width="60px">编号</td>
-				<td>姓名</td>
-				<td>学号</td>
-				<td>电话号码</td>
-				<td width="100px">操作</td>
+				<td width="80px">编号</td>
+				<td width="230px">分类姓名</td>
+				<td width="270px">数量</td>
+				<td width="300px">父级栏</td>
+				<td width="150px">操作</td>
 			</tr>
 		</thead>
 		<tbody>
