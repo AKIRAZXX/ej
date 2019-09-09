@@ -1,4 +1,7 @@
 
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
 <!-- 内容 -->
 <div class="classift">
 	<div class="mb_nav">
@@ -10,16 +13,16 @@
 		<div id="btn_dc" class="btn">导出</div>
 	</div>
 	<div class="tjbd">
-		<form method="post" action="javascript:void(0)">
+		<form id="form1" method="post" action="javascript:void(0)">
 			<!-- hidden 一个隐藏表单 可以用来存放不想让用户看到的数据 -->
-			<input type="hidden" name="id" id="id" />
-			姓名 <input type="text" name="name" id="name" />
-			数量 <input type="text" name="num" id="num" />
+			<input type="hidden" name="id"  />
+			姓名 <input type="text" name="name"  />
+			数量 <input type="text" name="num"  />
 			父级栏 <input type="text" name="parentId"/>
 			<input type="submit" name="提交" />
 		</form>
 	</div>
-	<table class="table">
+	<table class="table" id="classify_tb1">
 		<thead>
 			<tr>
 				<td width="80px">编号</td>
@@ -30,72 +33,126 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="hung">
-				<td><input type="checkbox" name="bh"></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>
-					<a class="btn_del" href="#">删除</a>
-					<a class="btn_upd" href="#">修改</a>
-				</td>
-			</tr>
+			
 		</tbody>
 	</table>
 </div>
 
 <script type="text/javascript">
- var baseURL = "http://134.175.154.93:6677";
+	var baseURL = "http://134.175.154.93:6677";
+	function reloadData(){
+		var url = baseURL+"/category/findAllCategory";
+		$.get(url,function(response,status){
+			$("#classify_tb1 tbody").empty();
+				response.data.forEach(function(item){
+				var newtr = $(`<tr>
+					<td><input type="checkbox" value="`+item.id+`"></td>
+					<td>`+item.name+`</td>
+					<td>`+item.num+`</td>
+					<td>`+item.parentId+`</td>
+					<td>
+						<a class="btn_del" href="javascript:void(0)">删除</a>
+						<a class="btn_upd" href="javascript:void(0)">修改</a>
+						<a class="btn_xq" href="javascript:void(0)">详情</a>
+					</td>
+				</tr>
+				`);
+				console.log(newtr)
+			$("#classify_tb1").append(newtr);
 
+		});
 
-	var btn_add = document.getElementById("btn_add");
-		//tbody是一个类数组
-	var tbody = document.getElementsByTagName("tbody")[0];
+	});
+}
 
-	document.forms[0].onsubmit = function(event){
-		var iid = document.querySelector("input[name=id]").value;
-		var iname = document.querySelector("input[name=name]").value;
-		var num = document.querySelector("input[name=num").value;
-		var parentId = document.querySelector("input[name=parentId]").value;
-
-		var xhr = new XMLHttpRequest();
-		xhr.open("POST",baseURL+"/category/insertCategory");
-		xhr.responseType = "json";
-		xhr.setRequestHeader("content-Type","application/x-www-form-urlencoded");
-		var data;
-		if(id){
-			data = "id="+iid+"&name="+iname+"&num="+num+"&parentId="+parentId;
-		} else {
-			data = "name="+name+"&num="+num+"&parentId="+parentId;
-		}
-
-		xhr.send(data);
-
-		xhr.onreadyStatechange = function(){
-			if(this.readyState === 4){
-				if(this.status === 200){
-					if(this.response.status === 200){
+$(function(){
+	//调用重载数据
+	reloadData();
+	//为删除和修改绑定事件
+	$("#classify_tb1").on("click","a",function(event){
+		switch(this.className){
+			case "btn_del":
+				var id = $(this).parents("tr").children().eq(0).find("input").val();
+				var url = baseURL+"/category/deleteByCategoryId";
+				var data = {
+					id:id
+				};
+				$.post(url,data,function(response){
+					if(response.status === 200){
 						reloadData();
 					} else {
-						alert("接口异常");
+						alert(response.message);
 					}
-				}
-			}
-		}
-		event.preventDefault();
+				})
+				break;
+			case "btn_upd":
 
-	}
-// 给添加按钮绑定事件
-		btn_add.onclick = function(){
-			document.querySelector("input[name=realname]").value = "";
-			document.querySelector("input[name=telephone]").value = "";
-			document.querySelector("input[name=id]").value = "";
-			
-			//测试
-			// console.log(event.target.parentNode.nextElementSibling);
-			event.target.parentNode.nextElementSibling.className = "tjbd1";
+				var id = $(this).parents("tr").children().eq(0).find("input").val();
+				var name = $(this).parents("tr").children().eq(1).text();
+				var num = $(this).parents("tr").children().eq(2).text();
+				var parentId = $(this).parents("tr").children().eq(3).text();
+
+				$("#form1 input[name=id]").val(id);
+				$("#form1 input[name=name]").val(name);
+				$("#form1 input[name=num]").val(num);
+				$("#form1 input[name=parentId]").val(parentId);
+
+				$("#form1").submit(function(event){					
+					
+					var url = baseURL+"/category/updateCategory";
+					var data = {
+						id:id,
+						name:name,
+						num:num,
+						parentId:parentId
+					}
+					$.post(url,data,function(response){
+						if(response.status === 200){
+							alert("提交成功");
+							reloadData();
+						} else {
+						alert(response.message);
+						}
+					})
+				})
+				
+				break;
 		}
-		btn_add.onblur = function(){
-			event.target.parentNode.nextElementSibling.className = "tjbd";
+	})
+
+	$("#btn_add").click(function(){
+		$("#customer_form input[name=id]").val("");
+		$("#customer_form input[name=realname]").val("");
+		$("#customer_form input[name=telephone]").val("");
+	});
+
+	//为添加绑定事件
+	$("#form1").submit(function(event){
+		var id = $(this).find("input[name=id]").val();
+		var name = $(this).find("input[name=name]").val();
+		var num = $(this).find("input[name=num]").val();
+		var parentId = $(this).find("input[name=parentId]").val();
+
+		var url = baseURL+"/category/insertCategory";
+		var data ={
+			id:id,
+			name:name,
+			num:num,
+			parentId:parentId
 		}
+		$.post(url,data,function(response){
+			if(response.status === 200){
+				alert("提交成功");
+				reloadData();
+			} else {
+				alert(response.message);
+			}
+		})
+		event.preventDefault();
+	})
+
+})
+
+
+
 </script>
