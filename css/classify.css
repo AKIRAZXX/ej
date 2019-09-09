@@ -26,6 +26,17 @@
  	font-size: 1em;
 
 }
+.tjbd{
+	margin:10px;
+	margin-left: 30px;
+	/*display: none;*/
+}
+/*.tjbd1{
+	margin:10px;
+}*/
+.tjbd>input{
+	margin: 5px;
+}
 .hung {
 	display: none;
 }

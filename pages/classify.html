@@ -1,8 +1,4 @@
-<script>
-$(document).ready(function(){
-	alert(111);
-})
-</script>
+
 <!-- 内容 -->
 <div class="classift">
 	<div class="mb_nav">
@@ -12,6 +8,16 @@ $(document).ready(function(){
 		<div id="btn_add" class="btn">添加</div>
 		<div id="btn_pldel" class="btn">批量删除</div>
 		<div id="btn_dc" class="btn">导出</div>
+	</div>
+	<div class="tjbd">
+		<form method="post" action="javascript:void(0)">
+			<!-- hidden 一个隐藏表单 可以用来存放不想让用户看到的数据 -->
+			<input type="hidden" name="id" id="id" />
+			姓名 <input type="text" name="name" id="name" />
+			数量 <input type="text" name="num" id="num" />
+			父级栏 <input type="text" name="parentId"/>
+			<input type="submit" name="提交" />
+		</form>
 	</div>
 	<table class="table">
 		<thead>
@@ -24,7 +30,72 @@ $(document).ready(function(){
 			</tr>
 		</thead>
 		<tbody>
-			
+			<tr class="hung">
+				<td><input type="checkbox" name="bh"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<a class="btn_del" href="#">删除</a>
+					<a class="btn_upd" href="#">修改</a>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </div>
+
+<script type="text/javascript">
+ var baseURL = "http://134.175.154.93:6677";
+
+
+	var btn_add = document.getElementById("btn_add");
+		//tbody是一个类数组
+	var tbody = document.getElementsByTagName("tbody")[0];
+
+	document.forms[0].onsubmit = function(event){
+		var iid = document.querySelector("input[name=id]").value;
+		var iname = document.querySelector("input[name=name]").value;
+		var num = document.querySelector("input[name=num").value;
+		var parentId = document.querySelector("input[name=parentId]").value;
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST",baseURL+"/category/insertCategory");
+		xhr.responseType = "json";
+		xhr.setRequestHeader("content-Type","application/x-www-form-urlencoded");
+		var data;
+		if(id){
+			data = "id="+iid+"&name="+iname+"&num="+num+"&parentId="+parentId;
+		} else {
+			data = "name="+name+"&num="+num+"&parentId="+parentId;
+		}
+
+		xhr.send(data);
+
+		xhr.onreadyStatechange = function(){
+			if(this.readyState === 4){
+				if(this.status === 200){
+					if(this.response.status === 200){
+						reloadData();
+					} else {
+						alert("接口异常");
+					}
+				}
+			}
+		}
+		event.preventDefault();
+
+	}
+// 给添加按钮绑定事件
+		btn_add.onclick = function(){
+			document.querySelector("input[name=realname]").value = "";
+			document.querySelector("input[name=telephone]").value = "";
+			document.querySelector("input[name=id]").value = "";
+			
+			//测试
+			// console.log(event.target.parentNode.nextElementSibling);
+			event.target.parentNode.nextElementSibling.className = "tjbd1";
+		}
+		btn_add.onblur = function(){
+			event.target.parentNode.nextElementSibling.className = "tjbd";
+		}
+</script>
